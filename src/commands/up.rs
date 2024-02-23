@@ -1,7 +1,5 @@
 use std::{
-    path::PathBuf,
-    sync::{Arc, Mutex},
-    time::Duration,
+    num::NonZeroUsize, path::PathBuf, sync::{Arc, Mutex}, time::Duration
 };
 
 use anyhow::bail;
@@ -165,7 +163,7 @@ pub async fn command(args: Args, _json: bool) -> Result<()> {
     let bytes = Vec::<u8>::new();
     let arc = Arc::new(Mutex::new(bytes));
     let mut parz = ZBuilder::<Gzip, _>::new()
-        .num_threads(num_cpus::get())
+        .num_threads(std::thread::available_parallelism().unwrap().into())
         .from_writer(SynchronizedWriter::new(arc.clone()));
 
     // list of all paths to ignore by default
