@@ -117,9 +117,9 @@ pub async fn command(args: Args, _json: bool) -> Result<()> {
     let (stream, _) = listener.accept().await?;
 
     // Intentionally not awaiting this task, so that we exit after a single request
-    tokio::task::spawn(async move {
-        http2::Builder::new(..Default::default()).serve_connection(, service_fn(hello));
-    });
+    // tokio::task::spawn(async move {
+    //     http2::Builder::new(..Default::default()).serve_connection(&mut stream, service_fn(hello));
+    // });
 
     let token = rx.recv().await.context("No token received")?;
     configs.root_config.user.token = Some(token);

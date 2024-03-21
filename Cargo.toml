@@ -50,13 +50,10 @@ tar = "0.4.40"
 synchronized-writer = "1.1.11"
 ignore = "0.4.22"
 num_cpus = "1.16.0"
-url = "2.5.0"
 futures = { version = "0.3.30", default-features = false, features = [
   "compat",
   "io-compat",
 ] }
-uuid = { version = "1.8.0", features = ["serde", "v4"] }
-httparse = "1.8.0"
 names = { version = "0.14.0", default-features = false }
 graphql-ws-client = { version = "0.8.0", features = ["client-graphql-client", "tungstenite"] }
 async-tungstenite = { version = "0.25.0", features = [
@@ -68,4 +65,4 @@ serde_with = "3.7.0"
 ctrlc = "3.4.4"
 which = "6.0.0"
 thiserror = "1.0.58"
-winapi = {version="0.3.9", features = ["minwindef", "tlhelp32", "processthreadsapi", "handleapi", "winerror"]}
+winapi = { version = "0.3.9", features = ["minwindef", "tlhelp32", "processthreadsapi", "handleapi", "winerror"] }
