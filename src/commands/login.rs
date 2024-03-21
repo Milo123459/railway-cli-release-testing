@@ -8,7 +8,7 @@ use super::*;
 
 use anyhow::bail;
 use http_body_util::Full;
-use hyper::{body::Bytes, server::conn::http1, service::service_fn, Request, Response};
+use hyper::{body::Bytes, server::conn::http2, service::service_fn, Request, Response};
 use is_terminal::IsTerminal;
 use rand::Rng;
 use serde::{Deserialize, Serialize};
@@ -118,10 +118,7 @@ pub async fn command(args: Args, _json: bool) -> Result<()> {
 
     // Intentionally not awaiting this task, so that we exit after a single request
     tokio::task::spawn(async move {
-        http1::Builder::new()
-            .serve_connection(stream, service_fn(hello))
-            .await?;
-        Ok::<_, anyhow::Error>(())
+        http2::Builder::new(..Default::default()).serve_connection(, service_fn(hello));
     });
 
     let token = rx.recv().await.context("No token received")?;
