@@ -8,11 +8,12 @@ use super::*;
 
 use anyhow::bail;
 use http_body_util::Full;
-use hyper::{body::Bytes, server::conn::http2, service::service_fn, Request, Response};
+use hyper::{body::Bytes, server::conn::http1, service::service_fn, Request, Response};
 use is_terminal::IsTerminal;
 use rand::Rng;
 use serde::{Deserialize, Serialize};
 use tokio::net::TcpListener;
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
 /// Login to your Railway account
 #[derive(Parser)]
@@ -117,9 +118,9 @@ pub async fn command(args: Args, _json: bool) -> Result<()> {
     let (stream, _) = listener.accept().await?;
 
     // Intentionally not awaiting this task, so that we exit after a single request
-    // tokio::task::spawn(async move {
-    //     http2::Builder::new(..Default::default()).serve_connection(&mut stream, service_fn(hello));
-    // });
+    tokio::task::spawn(async move {
+        http2::Builder::new(..Default::default()).serve_connection(stream, service_fn(hello));
+    });
 
     let token = rx.recv().await.context("No token received")?;
     configs.root_config.user.token = Some(token);
